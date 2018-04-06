@@ -148,14 +148,14 @@ class Pages {
                         }
                         foreach ($collection as $model) {
                             $html_special .= View($special['blade'], array_merge($special['parameters'], $parameters, [
-                                'user' => $reques - user(),
+                                'user' => request()->user(),
                                 'special_section' => $nombre,
                                 $special['object_name'] => $model
                                     ]))->render();
                         }
                     } else {
-                        $html_special = View($special['blade'], array_merge(special['parameters'], $parameters, [
-                            'user' => $reques - user(),
+                        $html_special = View($special['blade'], array_merge($special['parameters'], $parameters, [
+                            'user' => request()->user(),
                             'special_section' => $nombre
                                 ]))->render();
                     }
