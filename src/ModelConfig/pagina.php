@@ -62,7 +62,7 @@ return [
 		"sections" => [
 			"tipo" => "relationships", 
 			"label" => "__trans__crudgenerator::pagina.labels.sections", 
-			"modelo" => "App\Section", 
+			"modelo" => "Sirgrimorum\Pages\Models\Section", 
 			"id" => "pagina_id", 
 			"campo" => "name", 
 			"card_class" => "bg-light", 

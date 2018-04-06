@@ -7,6 +7,7 @@ use App\User;
 use Sirgrimorum\Pages\Models\Pagina;
 use Illuminate\Support\Facades\Session;
 use Sirgrimorum\CrudGenerator\CrudGenerator;
+use App\Http\Controllers\Controller;
 
 class PaginaController extends Controller {
 

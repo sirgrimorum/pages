@@ -52,7 +52,7 @@ return [
         "pagina" => [
             "tipo" => "relationship",
             "label" => "__trans__crudgenerator::section.labels.pagina",
-            "modelo" => "App\Pagina",
+            "modelo" => "Sirgrimorum\Pages\Models\Pagina",
             "id" => "id",
             "campo" => "name",
             "todos" => "",

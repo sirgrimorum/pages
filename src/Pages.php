@@ -13,6 +13,7 @@ class Pages {
      * @return Sirgrimorum\Pages\Models\Pagina
      */
     public static function getFirstAllowedPage() {
+        $PaginasModel = config('sirgrimorum.pages.default_paginas_model', 'Sirgrimorum\Pages\Models\Pagina');
         foreach ($PaginasModel::where('activo', '=', '1')->orderBy('order')->get() as $pagina) {
             if (Pages::hasAccessToPagina($pagina)) {
                 return $pagina;
@@ -37,14 +38,13 @@ class Pages {
             }
             $config = config($config);
         }
-        $PaginasModel = array_get($config, 'default_paginas_model', \Sirgrimorum\Pages\Models\Pagina);
+        $PaginasModel = array_get($config, 'default_paginas_model', 'Sirgrimorum\Pages\Models\Pagina');
         if (is_object($name)) {
             $pagina = $name;
-        } elseif ($name = "") {
-            $name = Pages::getFirstAllowedPage();
-            $pagina = $PaginasModel::getByLink($name);
+        } elseif ($name == "") {
+            $pagina = Pages::getFirstAllowedPage();
         } elseif (is_string($name)) {
-            $pagina = $PaginasModel::getByLink($name);
+            $pagina = $PaginasModel::where("name","=",$name)->first();
         } else {
             $pagina = false;
         }
@@ -68,18 +68,24 @@ class Pages {
                 $html = Pages::buildSpecialSections($html, $config, ['pagina' => $pagina]);
             } else {
                 $mensajes = trans("crudgenerator::pagina.messages");
-                $mensaje = str_replace([":modelName", ":modelId"], [$paginaName, 0], $mensajes["no_access"]);
+                $mensaje = str_replace([":modelName", ":modelId"], [$name, 0], $mensajes["no_access"]);
+                $html = '<div class="container">' .
+                        '    <div class="alert alert-danger alert-dismissible fade show" role="alert">' .
+                        '        <button type="button" class="close" data-dismiss="alert" aria-label="{{trans("crudgenerator::admin.layout.labels.close")}}"><span aria-hidden="true">&times;</span></button>' .
+                        '        ' . $mensaje .
+                        '    </div>' .
+                        '</div>';
             }
         } else {
             $mensajes = trans("crudgenerator::pagina.messages");
-            $mensaje = str_replace([":modelName", ":modelId"], [$paginaName, 0], $mensajes["not_found"]);
+            $mensaje = str_replace([":modelName", ":modelId"], [$name, 0], $mensajes["not_found"]);
+            $html = '<div class="container">' .
+                    '    <div class="alert alert-danger alert-dismissible fade show" role="alert">' .
+                    '        <button type="button" class="close" data-dismiss="alert" aria-label="{{trans("crudgenerator::admin.layout.labels.close")}}"><span aria-hidden="true">&times;</span></button>' .
+                    '        ' . $mensaje .
+                    '    </div>' .
+                    '</div>';
         }
-        $html = '<div class="container">' .
-                '    <div class="alert alert-danger alert-dismissible fade show" role="alert">' .
-                '        <button type="button" class="close" data-dismiss="alert" aria-label="{{trans("crudgenerator::admin.layout.labels.close")}}"><span aria-hidden="true">&times;</span></button>' .
-                '        ' . $mensaje .
-                '    </div>' .
-                '</div>';
         return $html;
     }
 
@@ -97,11 +103,11 @@ class Pages {
             }
             $config = config($config);
         }
-        $SectionsModel = array_get($config, 'default_paginas_model', \Sirgrimorum\Pages\Models\Section);
+        $SectionsModel = array_get($config, 'default_sections_model', 'Sirgrimorum\Pages\Models\Section');
         if (is_object($name)) {
             $section = $name;
         } elseif (is_string($name)) {
-            $section = $SectionsModel::getByLink($name);
+            $section = $SectionsModel::where("name","=",$name)->first();
         } else {
             $section = false;
         }
@@ -182,7 +188,7 @@ class Pages {
             $automenu = [$lado => []];
         }
         $auxArray = [];
-        $PaginasModel = config('sirgrimorum.pages.default_paginas_model', \Sirgrimorum\Pages\Models\Pagina);
+        $PaginasModel = config('sirgrimorum.pages.default_paginas_model', 'Sirgrimorum\Pages\Models\Pagina');
         foreach ($PaginasModel::where("activo", "=", "1")->orderBy("order")->get() as $pagina) {
             if (Pages::hasAccessToPagina($pagina)) {
                 $auxArray[$pagina->get("menu")] = route(config('sirgrimorum.pages.group_name', 'paginas.') . 'show', $pagina->get("link"));
@@ -238,7 +244,7 @@ class Pages {
                         }
                     } elseif (stripos($rule, '*') !== false) {
                         $rule = str_replace("*", "", $rule);
-                        if (substr($objeto->get("name"), len($objeto->get("name")) - len($rule)) == $rule) {
+                        if (substr($objeto->get("name"), strlen($objeto->get("name")) - strlen($rule)) == $rule) {
                             $cumple = true;
                         }
                     } elseif ($rule == '_general') {

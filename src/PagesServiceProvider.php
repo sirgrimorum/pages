@@ -5,6 +5,7 @@ namespace Sirgrimorum\Pages;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Artisan;
 
 class PagesServiceProvider extends ServiceProvider {
 
@@ -68,7 +69,7 @@ class PagesServiceProvider extends ServiceProvider {
 
             $this->line("Registering Pagina Config in crudgenerator configuration file");
             $path = 'sirgrimorum.models.pagina';
-            $config = \Sirgrimorum\CrudGenerator\CrudGenerator::getConfig($path);
+            $config = \Sirgrimorum\CrudGenerator\CrudGenerator::getConfig('pagina', false, $path);
             $bar->advance();
             $this->info("Config Loaded");
             if (\Sirgrimorum\CrudGenerator\CrudGenerator::registerConfig($config, $path)) {
@@ -80,7 +81,7 @@ class PagesServiceProvider extends ServiceProvider {
             }
             $this->line("Registering Section Config in crudgenerator configuration file");
             $path = 'sirgrimorum.models.section';
-            $config = \Sirgrimorum\CrudGenerator\CrudGenerator::getConfig($path);
+            $config = \Sirgrimorum\CrudGenerator\CrudGenerator::getConfig('section', false, $path);
             $bar->advance();
             $this->info("Config Loaded");
             if (\Sirgrimorum\CrudGenerator\CrudGenerator::registerConfig($config, $path)) {
