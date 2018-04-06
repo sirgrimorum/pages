@@ -60,10 +60,20 @@ return[
      */
     'special_sections' => [
         '[name]'=>[ //The name between the {%% %%} in the content or title of the section or the template of the page to be replaced
+            'pre_html' => 'html_tags', //the html to instert before the blade
             'blade' => 'blade.include.name', //the blade to load for the item
+            'post_html' => 'html_tags', //the html to instert after the blade
             'type' => 'simple', //type of section, options are: 'simple' (just load the blade template), 'collection' (load the blade for each object in a collection), 'model' (load the blade for every registry of a certain model)
             'parameters' => [], //array of parameters to pass to the blade, this will be merged with an array with ['user', 'pagina', 'special_section', '{object_name (only for the 'model' and 'collection' types}']
-            'collection' => [], // the collection with the objects, only for the 'collection' type
+            'collection' => [ // the collection with the objects or the details to constructir, only for the 'collection' type
+                'class' => 'App\Modelname', // Class name
+                'isModel' => false, // The class is a model
+                'query' => " id = '1'", // For whereRaw, or empty or not present for ->all()
+                'orderBy' => 'field', //if needs ordering, the field
+                'order' => 'asc', // if needed. default is asc
+                'attribute' => 'attributeName', // only when the 'isModel' option is true
+                'function' => 'functionName', //only when the 'isModel' option is true
+            ], 
             'model' => 'App\Modelname', // The model class to load, only for the 'model' type
             'object_name' => 'variable_name' // The name of the variable with the object to pass in the parameters to the blade, only for the 'collection' and 'model' types
         ]

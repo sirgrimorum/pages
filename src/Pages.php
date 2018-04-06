@@ -44,7 +44,7 @@ class Pages {
         } elseif ($name == "") {
             $pagina = Pages::getFirstAllowedPage();
         } elseif (is_string($name)) {
-            $pagina = $PaginasModel::where("name","=",$name)->first();
+            $pagina = $PaginasModel::where("name", "=", $name)->first();
         } else {
             $pagina = false;
         }
@@ -107,7 +107,7 @@ class Pages {
         if (is_object($name)) {
             $section = $name;
         } elseif (is_string($name)) {
-            $section = $SectionsModel::where("name","=",$name)->first();
+            $section = $SectionsModel::where("name", "=", $name)->first();
         } else {
             $section = false;
         }
@@ -139,10 +139,30 @@ class Pages {
         if (is_array(array_get($config, 'special_sections', []))) {
             foreach (array_get($config, 'special_sections', []) as $nombre => $special) {
                 if (stripos($html, "{%%$nombre%%}") !== false) {
-                    $html_special = "";
+                    $html_special = array_get($special, "pre_html", "");
                     if ($special['type'] == 'collection' || $special['type'] == 'model') {
                         if ($special['type'] == 'collection') {
-                            $collection = $special['collection'];
+                            if (is_array($special['collection'])) {
+                                if (isset($special['collection']['class'])) {
+                                    $query = array_get($special['collection'], "query", "1 = 1");
+                                    if ($query == "") {
+                                        $query = "1 = 1";
+                                    }
+                                    $orderBy = array_get($special['collection'], "orderBy", (new $special['collection']['class'])->getKeyName());
+                                    $order = array_get($special['collection'], "order", "asc");
+                                    if ($special['collection']['isModel'] && isset($special['collection']['attribute'])){
+                                        $collection = $special['collection']['class']::whereRaw($query)->orderBy($orderBy, $order)->first()->{$special['collection']['attribute']};
+                                    }elseif($special['collection']['isModel'] && isset($special['collection']['function'])){
+                                        $collection = $special['collection']['class']::whereRaw($query)->orderBy($orderBy, $order)->first()->{$special['collection']['function']}();
+                                    }else{
+                                        $collection = $special['collection']['class']::whereRaw($query)->orderBy($orderBy, $order)->get();
+                                    }
+                                } else {
+                                    $collection = $special['collection'];
+                                }
+                            } else {
+                                $collection = $special['collection'];
+                            }
                         } else {
                             $collection = $special['model']::all();
                         }
@@ -159,6 +179,7 @@ class Pages {
                             'special_section' => $nombre
                                 ]))->render();
                     }
+                    $html_special .= array_get($special, "post_html", "");
                     $html = str_replace("{%%$nombre%%}", $html_special, $html);
                 }
             }
