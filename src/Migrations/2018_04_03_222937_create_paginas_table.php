@@ -15,7 +15,7 @@ class CreatePaginasTable extends Migration
     {
         Schema::create('paginas', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string("name", 150);
             $table->string("link", 50);
             $table->string("menu", 50);

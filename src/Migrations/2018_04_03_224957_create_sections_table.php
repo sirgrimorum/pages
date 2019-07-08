@@ -15,13 +15,13 @@ class CreateSectionsTable extends Migration
     {
         Schema::create('sections', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string("name", 150);
             $table->string("titulo", 50);
             $table->string("texto", 50);
             $table->integer("order")->default(1);
             $table->boolean("activo")->default(true);
-            $table->integer('pagina_id')->unsigned()->index();
+            $table->bigInteger('pagina_id')->unsigned()->index();
             $table->foreign('pagina_id')->references('id')->on('paginas')->onDelete('cascade');
             $table->timestamps();
         });
