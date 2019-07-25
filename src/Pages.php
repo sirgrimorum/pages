@@ -210,7 +210,7 @@ class Pages {
         }
         $auxArray = [];
         $PaginasModel = config('sirgrimorum.pages.default_paginas_model', 'Sirgrimorum\Pages\Models\Pagina');
-        foreach ($PaginasModel::where("activo", "=", "1")->orderBy("order")->get() as $pagina) {
+        foreach ($PaginasModel::where("activo", "=", "1")->where("order",">","0")->orderBy("order")->get() as $pagina) {
             if (Pages::hasAccessToPagina($pagina)) {
                 $auxArray[$pagina->get("menu")] = route(config('sirgrimorum.pages.group_name', 'paginas.') . 'show', $pagina->get("link"));
             }
@@ -288,5 +288,4 @@ class Pages {
         }
         return false;
     }
-
 }
