@@ -92,6 +92,23 @@ class PagesServiceProvider extends ServiceProvider {
                 $bar->finish();
             }
         })->describe('Register de configurations files in sirgrimorum/crudgenerator');
+        
+        Artisan::command('pages:createseed', function () {
+            $bar = $this->output->createProgressBar(2);
+            $confirm = $this->choice("Do you wisth to clean the DatabaseSeeder.php list?", ['yes', 'no'], 0);
+            $bar->advance();
+            $nombre = date("Y_m_d_His");
+            if ($confirm == 'yes') {
+                $this->line("Creating seed archive of articles table and celaning DatabaseSeeder");
+                Artisan::call("iseed articles,paginas,sections --classnameprefix={$nombre} --chunksize=100 --clean");
+            } else {
+                $this->line("Creating seed archive of articles table and adding to DatabaseSeeder list");
+                Artisan::call("iseed articles,paginas,sections --classnameprefix={$nombre} --chunksize=100");
+            }
+            $this->info("Seed files created with the names {$nombre}ArticlesSeeder.php, {$nombre}PaginasSeeder.php, {$nombre}SectionsSeeder.php");
+            $bar->advance();
+            $bar->finish();
+        })->describe('Create seeder files with the current tables Articles, Paginas and Sections');
     }
 
     /**
