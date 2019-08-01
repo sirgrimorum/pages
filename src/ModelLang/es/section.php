@@ -3,8 +3,8 @@
 return [
     "labels" => [
         "section" => "Sección",
-        "sections" => "Secciónes",
-        "plural" => "Secciónes",
+        "sections" => "Secciones",
+        "plural" => "Secciones",
         "singular" => "Sección",
                 "name" => "Nombre",
                 "titulo" => "Título",
