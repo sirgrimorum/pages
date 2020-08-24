@@ -5,7 +5,7 @@ namespace Sirgrimorum\Pages;
 class Pages {
 
     function __construct() {
-        
+
     }
 
     /**
@@ -24,7 +24,7 @@ class Pages {
 
     /**
      * Return the html of a pagina
-     * 
+     *
      * @param mix $name The pagina name, id or object. If "" it will use the first allowed page.
      * @param string|array $config Optional, the config path or array
      * @param array $sections Optional, the sections to load on the pagina
@@ -61,11 +61,11 @@ class Pages {
                 }
                 foreach ($sections as $section) {
                     if (Pages::hasAccessToSection($section)) {
-                        $html_sections .=$section->get("titulo") . $section->get("texto");
+                        $html_sections .= Pages::buildSection($section,$config);
                     }
                 }
                 $html = str_replace("{%%sections%%}", $html_sections, $html);
-                $html = Pages::buildSpecialSections($html, $config, ['pagina' => $pagina]);
+                $html = Pages::buildSpecialSections($html, $config, ['pagina' => $pagina, 'section' => null]);
             } else {
                 $mensajes = trans("crudgenerator::pagina.messages");
                 $mensaje = str_replace([":modelName", ":modelId"], [$name, 0], $mensajes["no_access"]);
@@ -93,7 +93,7 @@ class Pages {
      * Return the html of a section
      * @param mix $name The section name, id or object
      * @param string|array $config Optional, the config path or array
-     * @return type
+     * @return string el html
      */
     public static function buildSection($name, $config = "") {
         $html = "";
@@ -114,7 +114,7 @@ class Pages {
         if ($section) {
             if (Pages::hasAccessToSection($section)) {
                 $html = $section->get("titulo") . $section->get("texto");
-                $html = Pages::buildSpecialSections($html, $config, ['pagina' => $section->pagina]);
+                $html = Pages::buildSpecialSections($html, $config, ['pagina' => $section->pagina, 'section' => $section]);
             }
         }
         return $html;
@@ -122,7 +122,7 @@ class Pages {
 
     /**
      * Replace the special sections in the html
-     * 
+     *
      * @param string $html Current html
      * @param string|array $config Optional, the config path or array
      * @param array $parameters Aditional parameters to be passed to the blades
@@ -189,7 +189,7 @@ class Pages {
 
     /**
      * Get the configuration array for the Sirgirmorum/AutoMenu
-     * 
+     *
      * @param int $offset The place in the original configuration where the links to the menu will be placed
      * @param string $lado Optional, the menu where the links will be placed
      * @param string|array $automenu Optional, the automenu configuration path or array
@@ -221,7 +221,7 @@ class Pages {
 
     /**
      * Whether the pagina is allowed to be seen right now or not
-     * 
+     *
      * @param Sirgrimorum\Pages\Models\Pagina $pagina
      * @return boolean
      */
@@ -231,7 +231,7 @@ class Pages {
 
     /**
      * Whether the section is allowed to be seen right now or not
-     * 
+     *
      * @param Sirgrimorum\Pages\Models\Section $section
      * @return boolean
      */
@@ -241,7 +241,7 @@ class Pages {
 
     /**
      * Whether a section or pagina is allowed to be seen right now or not
-     * 
+     *
      * @param string $tipo 'paginas' or 'sections'
      * @param Object $objeto The pagina or section
      * @return boolean

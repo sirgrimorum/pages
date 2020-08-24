@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+
 return[
     /**
      * Default Model for the paginas table
@@ -22,7 +24,7 @@ return[
      */
     'group_name' => 'paginas.',
     /**
-     * Route group prefix (the base direction in the url), 
+     * Route group prefix (the base direction in the url),
      * used in not localized version otherwise will be loaded from the Lang file
      */
     'group_prefix' => '',
@@ -64,7 +66,7 @@ return[
             'blade' => 'blade.include.name', //the blade to load for the item
             'post_html' => 'html_tags', //the html to instert after the blade
             'type' => 'simple', //type of section, options are: 'simple' (just load the blade template), 'collection' (load the blade for each object in a collection), 'model' (load the blade for every registry of a certain model)
-            'parameters' => [], //array of parameters to pass to the blade, this will be merged with an array with ['user', 'pagina', 'special_section', '{object_name (only for the 'model' and 'collection' types}']
+            'parameters' => [], //array of parameters to pass to the blade, this will be merged with an array with ['user', 'pagina', 'section' (puede ser null si viene de página principal), 'special_section', '{object_name (only for the 'model' and 'collection' types}']
             'collection' => [ // the collection with the objects or the details to constructir, only for the 'collection' type
                 'class' => 'App\Modelname', // Class name
                 'isModel' => false, // The class is a model
@@ -73,12 +75,12 @@ return[
                 'order' => 'asc', // if needed. default is asc
                 'attribute' => 'attributeName', // only when the 'isModel' option is true
                 'function' => 'functionName', //only when the 'isModel' option is true
-            ], 
+            ],
             'model' => 'App\Modelname', // The model class to load, only for the 'model' type
             'object_name' => 'variable_name' // The name of the variable with the object to pass in the parameters to the blade, only for the 'collection' and 'model' types
         ]
     ],
-    
+
     /**
      * Define who could see the paginas. False mean not able to see it.
      * Policies are evaluated in order, and all must be fulfilled
