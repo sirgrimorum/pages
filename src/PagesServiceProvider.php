@@ -5,7 +5,6 @@ namespace Sirgrimorum\Pages;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Artisan;
 
 class PagesServiceProvider extends ServiceProvider {
 
@@ -64,51 +63,16 @@ class PagesServiceProvider extends ServiceProvider {
             return Pages::buildSection($name, $config);
         });
 
-        Artisan::command('pages:registercrud', function () {
-            $bar = $this->output->createProgressBar(4);
-
-            $this->line("Registering Pagina Config in crudgenerator configuration file");
-            $path = 'sirgrimorum.models.pagina';
-            $config = \Sirgrimorum\CrudGenerator\CrudGenerator::getConfig('pagina', false, $path);
-            $bar->advance();
-            $this->info("Config Loaded");
-            if (\Sirgrimorum\CrudGenerator\CrudGenerator::registerConfig($config, $path)) {
-                $this->info("Config registered!");
-                $bar->advance();
-            } else {
-                $this->error("Something went wrong and config could not be registered");
-                $bar->advance();
-            }
-            $this->line("Registering Section Config in crudgenerator configuration file");
-            $path = 'sirgrimorum.models.section';
-            $config = \Sirgrimorum\CrudGenerator\CrudGenerator::getConfig('section', false, $path);
-            $bar->advance();
-            $this->info("Config Loaded");
-            if (\Sirgrimorum\CrudGenerator\CrudGenerator::registerConfig($config, $path)) {
-                $this->info("Config registered!");
-                $bar->finish();
-            } else {
-                $this->error("Something went wrong and config could not be registered");
-                $bar->finish();
-            }
-        })->describe('Register de configurations files in sirgrimorum/crudgenerator');
-        
-        Artisan::command('pages:createseed', function () {
-            $bar = $this->output->createProgressBar(2);
-            $confirm = $this->choice("Do you wisth to clean the DatabaseSeeder.php list?", ['yes', 'no'], 0);
-            $bar->advance();
-            $nombre = date("YmdHis");
-            if ($confirm == 'yes') {
-                $this->line("Creating seed archive of articles table and celaning DatabaseSeeder");
-                Artisan::call("iseed articles,paginas,sections --classnamesuffix={$nombre} --chunksize=100 --clean");
-            } else {
-                $this->line("Creating seed archive of articles table and adding to DatabaseSeeder list");
-                Artisan::call("iseed articles,paginas,sections --classnamesuffix={$nombre} --chunksize=100");
-            }
-            $this->info("Seed files created with the names Articles{$nombre}Seeder.php, Paginas{$nombre}Seeder.php, Sections{$nombre}Seeder.php");
-            $bar->advance();
-            $bar->finish();
-        })->describe('Create seeder files with the current tables Articles, Paginas and Sections');
+        /**
+         * Console commands
+         */
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+               Commands\RegisterCrud::class,
+               Commands\RegisterMiddleware::class,
+               Commands\CreateSeed::class
+            ]);
+        }
     }
 
     /**

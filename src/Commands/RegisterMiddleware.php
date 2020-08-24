@@ -42,27 +42,23 @@ class RegisterMiddleware extends Command
         if (file_exists($path)) {
             $contents = file($path);
             $inicio = -1;
-            $webEncontrado = -1;
             $fin = -1;
             $encontrado = -1;
             foreach ($contents as $index => $line) {
-                if (strpos($line, '$middlewareGroups = [') !== false) {
+                if (strpos($line, '$routeMiddleware = [') !== false) {
                     $inicio = $index;
                 }
-                if (strpos($line, "'web'") !== false && $inicio >= 0 && $fin == -1) {
-                    $webEncontrado = $index;
-                }
-                if (strpos($line, $middlewareClass) !== false && $inicio >= 0 && $webEncontrado >= 0 && $fin == -1) {
+                if (strpos($line, $middlewareClass) !== false && $inicio >= 0 && $fin == -1) {
                     $encontrado = $index;
                 }
-                if (strpos($line, "],") !== false && $inicio >= 0  && $webEncontrado >= 0 && $fin == -1) {
+                if (strpos($line, "];") !== false && $inicio >= 0 && $fin == -1) {
                     $fin = $index;
                 }
             }
-            $newTexto = chr(9) . $middlewareClass . "::class, " . chr(13) . chr(10);
+            $newTexto = chr(9) . "'pages' => " . $middlewareClass . "::class, " . chr(13) . chr(10);
             if ($encontrado >= 0) {
                 $contents[$encontrado] = $newTexto;
-            } elseif ($webEncontrado >= 0 && $fin >= 0) {
+            } elseif ($inicio >= 0 &&  $fin >= 0) {
                 $newContent = array_slice($contents, 0, $fin);
                 $newContent[] = $newTexto;
                 foreach (array_slice($contents, $fin) as $linea) {
