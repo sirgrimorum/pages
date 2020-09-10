@@ -75,5 +75,6 @@ class RegisterMiddleware extends Command
         } else {
             $this->error("Something went wrong registering Pages middleware, please register it in app/Http/Kernel.php under web group");
         }
+        return 0;
     }
 }

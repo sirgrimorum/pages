@@ -52,5 +52,6 @@ class CreateSeed extends Command
         $this->info("Seed files created with the names Articles{$nombre}Seeder.php, Paginas{$nombre}Seeder.php, Sections{$nombre}Seeder.php");
         $bar->advance();
         $bar->finish();
+        return 0;
     }
 }

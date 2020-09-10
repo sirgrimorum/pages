@@ -63,5 +63,6 @@ class RegisterCrud extends Command
             $this->error("Something went wrong and config could not be registered");
             $bar->finish();
         }
+        return 0;
     }
 }
