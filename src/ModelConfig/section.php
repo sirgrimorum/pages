@@ -7,12 +7,13 @@ return [
     "id" => "id",
     "url" => "Sirgrimorum_CrudAdministrator",
     "botones" => "__trans__crudgenerator::admin.layout.labels.create",
+    "icono" => "<i class='fa fa-object-ungroup mr-1'></i>",
     "campos" => [
         "name" => [
             "tipo" => "text",
             "label" => "__trans__crudgenerator::section.labels.name",
             "placeholder" => "__trans__crudgenerator::section.placeholders.name",
-            "description" => "__trans__crudgenerator::section.descriptions.name", 
+            "description" => "__trans__crudgenerator::section.descriptions.name",
         ],
         "titulo" => [
             "tipo" => "article",
@@ -20,7 +21,7 @@ return [
             "label" => "__trans__crudgenerator::section.labels.titulo",
             "placeholder" => "__trans__crudgenerator::section.placeholders.titulo",
             "scope" => "sections.titulo",
-            "description" => "__trans__crudgenerator::section.descriptions.titulo", 
+            "description" => "__trans__crudgenerator::section.descriptions.titulo",
         ],
         "texto" => [
             "tipo" => "article",
@@ -28,7 +29,7 @@ return [
             "placeholder" => "__trans__crudgenerator::section.placeholders.texto",
             "scope" => "sections.texto",
             "es_html" => true,
-            "description" => "__trans__crudgenerator::section.descriptions.texto", 
+            "description" => "__trans__crudgenerator::section.descriptions.texto",
         ],
         "order" => [
             "tipo" => "number",
@@ -40,14 +41,14 @@ return [
                 "2" => ".",
             ],
             "valor" => "1",
-            "description" => "__trans__crudgenerator::section.descriptions.order", 
+            "description" => "__trans__crudgenerator::section.descriptions.order",
         ],
         "activo" => [
             "tipo" => "checkbox",
             "label" => "__trans__crudgenerator::section.labels.activo",
             "value" => true,
             "valor" => "1",
-            "description" => "__trans__crudgenerator::section.descriptions.activo", 
+            "description" => "__trans__crudgenerator::section.descriptions.activo",
         ],
         "pagina" => [
             "tipo" => "relationship",
@@ -56,7 +57,7 @@ return [
             "id" => "id",
             "campo" => "name",
             "todos" => "",
-            "description" => "__trans__crudgenerator::section.descriptions.pagina", 
+            "description" => "__trans__crudgenerator::section.descriptions.pagina",
         ],
     ],
     "rules" => [
