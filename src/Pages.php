@@ -2,6 +2,8 @@
 
 namespace Sirgrimorum\Pages;
 
+use Illuminate\Support\Arr;
+
 class Pages {
 
     function __construct() {
@@ -38,7 +40,7 @@ class Pages {
             }
             $config = config($config);
         }
-        $PaginasModel = \Illuminate\Support\Arr::get($config, 'default_paginas_model', 'Sirgrimorum\Pages\Models\Pagina');
+        $PaginasModel = Arr::get($config, 'default_paginas_model', 'Sirgrimorum\Pages\Models\Pagina');
         if (is_object($name)) {
             $pagina = $name;
         } elseif ($name == "") {
@@ -103,7 +105,7 @@ class Pages {
             }
             $config = config($config);
         }
-        $SectionsModel = \Illuminate\Support\Arr::get($config, 'default_sections_model', 'Sirgrimorum\Pages\Models\Section');
+        $SectionsModel = Arr::get($config, 'default_sections_model', 'Sirgrimorum\Pages\Models\Section');
         if (is_object($name)) {
             $section = $name;
         } elseif (is_string($name)) {
@@ -136,20 +138,20 @@ class Pages {
             }
             $config = config($config);
         }
-        if (is_array(\Illuminate\Support\Arr::get($config, 'special_sections', []))) {
-            foreach (\Illuminate\Support\Arr::get($config, 'special_sections', []) as $nombre => $special) {
+        if (is_array(Arr::get($config, 'special_sections', []))) {
+            foreach (Arr::get($config, 'special_sections', []) as $nombre => $special) {
                 if (stripos($html, "{%%$nombre%%}") !== false) {
-                    $html_special = \Illuminate\Support\Arr::get($special, "pre_html", "");
+                    $html_special = Arr::get($special, "pre_html", "");
                     if ($special['type'] == 'collection' || $special['type'] == 'model') {
                         if ($special['type'] == 'collection') {
                             if (is_array($special['collection'])) {
                                 if (isset($special['collection']['class'])) {
-                                    $query = \Illuminate\Support\Arr::get($special['collection'], "query", "1 = 1");
+                                    $query = Arr::get($special['collection'], "query", "1 = 1");
                                     if ($query == "") {
                                         $query = "1 = 1";
                                     }
-                                    $orderBy = \Illuminate\Support\Arr::get($special['collection'], "orderBy", (new $special['collection']['class'])->getKeyName());
-                                    $order = \Illuminate\Support\Arr::get($special['collection'], "order", "asc");
+                                    $orderBy = Arr::get($special['collection'], "orderBy", (new $special['collection']['class'])->getKeyName());
+                                    $order = Arr::get($special['collection'], "order", "asc");
                                     if ($special['collection']['isModel'] && isset($special['collection']['attribute'])){
                                         $collection = $special['collection']['class']::whereRaw($query)->orderBy($orderBy, $order)->first()->{$special['collection']['attribute']};
                                     }elseif($special['collection']['isModel'] && isset($special['collection']['function'])){
@@ -179,7 +181,7 @@ class Pages {
                             'special_section' => $nombre
                                 ]))->render();
                     }
-                    $html_special .= \Illuminate\Support\Arr::get($special, "post_html", "");
+                    $html_special .= Arr::get($special, "post_html", "");
                     $html = str_replace("{%%$nombre%%}", $html_special, $html);
                 }
             }

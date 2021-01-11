@@ -3,7 +3,7 @@
 namespace Sirgrimorum\Pages\Commands;
 
 use Illuminate\Console\Command;
-
+use Illuminate\Support\Str;
 class RegisterMiddleware extends Command
 {
     /**
@@ -37,7 +37,7 @@ class RegisterMiddleware extends Command
      */
     public function handle()
     {
-        $path = \Illuminate\Support\Str::finish(str_replace(["/"], ["\\"], app_path('Http/Kernel.php')), '.php');
+        $path = Str::finish(str_replace(["/"], ["\\"], app_path('Http/Kernel.php')), '.php');
         $middlewareClass = "\\Sirgrimorum\\Pages\\Middleware\\PagesRedirectMiddleware";
         if (file_exists($path)) {
             $contents = file($path);
