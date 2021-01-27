@@ -39,7 +39,7 @@ class CreateSeed extends Command
     public function handle()
     {
         $bar = $this->output->createProgressBar(2);
-        $confirm = $this->choice("Do you wisth to clean the DatabaseSeeder.php list?", ['yes', 'no'], 0);
+        $confirm = $this->choice("Do you wish to clean the DatabaseSeeder.php list?", ['yes', 'no'], 0);
         $bar->advance();
         $nombre = date("YmdHis");
         if ($confirm == 'yes') {
