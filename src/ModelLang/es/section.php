@@ -44,6 +44,7 @@ return [
         "create" => "Crear sección",
         "edit" => "Editar sección",
         "show" => "Ver sección",
+        "remove" => "Eliminar secciones"
     ],
     "messages" => [
         'confirm_destroy' => '¿Está seguro que quiere eliminar la sección ":modelName"?',

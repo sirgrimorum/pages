@@ -53,6 +53,7 @@ return [
         "create" => "Crear página",
         "edit" => "Editar página",
         "show" => "Ver página",
+        "remove" => "Eliminar páginas"
     ],
     "messages" => [
         'confirm_destroy' => '¿Está seguro que quiere eliminar la Página ":modelName"?',

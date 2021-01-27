@@ -53,6 +53,7 @@ return [
         "create" => "Create page",
         "edit" => "Edit page",
         "show" => "Show page",
+        "remove" => "Remove pages"
     ],
     "messages" => [
         'confirm_destroy' => 'Are you sure to delete ":modelName"?',

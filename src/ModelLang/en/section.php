@@ -44,6 +44,7 @@ return [
         "create" => "Create section",
         "edit" => "Edit section",
         "show" => "Show section",
+        "remove" => "Remove sections"
     ],
     "messages" => [
         'confirm_destroy' => 'Are you sure to delete ":modelName"?',
