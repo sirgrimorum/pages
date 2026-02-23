@@ -25,7 +25,7 @@ class PagesServiceProvider extends ServiceProvider {
         $this->publishes([
             __DIR__ . '/Views' => resource_path('views/vendor/sirgrimorum/pages'),
                 ], 'views');
-        $this->loadTranslationsFrom(__DIR__ . 'Lang', 'pages');
+        $this->loadTranslationsFrom(__DIR__ . '/Lang', 'pages');
         $this->publishes([
             __DIR__ . '/Lang' => resource_path('lang/vendor/pages'),
                 ], 'lang');

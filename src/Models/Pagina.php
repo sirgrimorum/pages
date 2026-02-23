@@ -28,7 +28,8 @@ class Pagina extends Model {
             //'sections',
     ];
 
-    public function _construct() {
+    public function __construct(array $attributes = []) {
+        parent::__construct($attributes);
         $this->error_messages = [
         ];
     }
