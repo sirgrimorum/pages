@@ -176,7 +176,7 @@ class Pages {
                                     ]))->render();
                         }
                     } else {
-                        $html_special = View($special['blade'], array_merge($special['parameters'], $parameters, [
+                        $html_special .= View($special['blade'], array_merge($special['parameters'], $parameters, [
                             'user' => request()->user(),
                             'special_section' => $nombre
                                 ]))->render();
@@ -261,13 +261,13 @@ class Pages {
                                 $cumple = true;
                             }
                         } else {
-                            if (stripos($objeto->get("name"), $rule) === 0) {
+                            if (substr($objeto->get("name"), strlen($objeto->get("name")) - strlen($rule)) == $rule) {
                                 $cumple = true;
                             }
                         }
                     } elseif (stripos($rule, '*') !== false) {
                         $rule = str_replace("*", "", $rule);
-                        if (substr($objeto->get("name"), strlen($objeto->get("name")) - strlen($rule)) == $rule) {
+                        if (stripos($objeto->get("name"), $rule) === 0) {
                             $cumple = true;
                         }
                     } elseif ($rule == '_general') {
